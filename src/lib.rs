@@ -4,3 +4,4 @@ pub mod log_entry;
 pub mod statistics;
 pub mod analyzer;
 pub mod error;
+pub mod parser;
