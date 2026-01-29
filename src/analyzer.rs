@@ -1,26 +1,13 @@
 use crate::log_entry::LogEntry;
-use crate::error::{ParseError, AnalyzerError};
 use crate::statistics::Statistics;
 
-pub struct LogAnalyzer {
+pub struct Analyzer {
     entries: Vec<LogEntry>,
-    errors: Vec<ParseError>,
 }
 
-impl LogAnalyzer {
-    pub fn new() -> Self {
-        Self {
-            entries: Vec::new(),
-            errors: Vec::new(),
-        }
-    }
-
-    pub fn entries(&self) -> &[LogEntry] {
-        &self.entries
-    }
-
-    pub fn parse_errors(&self) -> &[ParseError] {
-        &self.errors
+impl Analyzer {
+    pub fn new(entries: Vec<LogEntry>) -> Self {
+        Self { entries }
     }
 
     pub fn statistics(&self) -> Statistics {
