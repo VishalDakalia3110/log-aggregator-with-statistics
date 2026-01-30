@@ -1,21 +1,23 @@
 use std::collections::HashMap;
+use serde::Serialize;
 use crate::log_entry::LogEntry;
 use crate::log_level::LogLevel;
 use crate::datetime::DateTime;
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub struct Statistics {
     pub total_entries: usize,
-    pub entries_by_level: HashMap<LogLevel, usize>,
-    pub entries_by_component: HashMap<String, usize>,
-    pub entries_by_hour: HashMap<u8, usize>,
+    pub entries_by_level: std::collections::HashMap<crate::log_level::LogLevel, usize>,
+    pub entries_by_component: std::collections::HashMap<String, usize>,
+    pub entries_by_hour: std::collections::HashMap<u8, usize>,
     pub error_count: usize,
     pub error_rate: f64,
     pub most_active_component: Option<String>,
     pub peak_hour: Option<u8>,
-    pub first_entry: Option<DateTime>,
-    pub last_entry: Option<DateTime>,
+    pub first_entry: Option<crate::datetime::DateTime>,
+    pub last_entry: Option<crate::datetime::DateTime>,
 }
+
 
 impl Statistics {
     pub fn from_entries(entries: &[LogEntry]) -> Self {
@@ -43,9 +45,10 @@ impl Statistics {
                 .or_insert(0) += 1;
 
             // Error count
-            if entry.level == LogLevel::Error {
+            if matches!(entry.level, LogLevel::Error | LogLevel::Fatal) {
                 error_count += 1;
             }
+
 
             // First & last entry
             first_entry = Some(match first_entry {

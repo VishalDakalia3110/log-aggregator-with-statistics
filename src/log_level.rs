@@ -1,8 +1,9 @@
 use std::fmt;
 use std::str::FromStr;
 use std::cmp::Ordering;
+use serde::Serialize;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize)]
 pub enum LogLevel {
     Trace,
     Debug,

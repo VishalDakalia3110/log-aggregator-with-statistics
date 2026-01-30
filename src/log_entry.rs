@@ -63,12 +63,16 @@ impl LogEntry {
             reason: "Missing log level".to_string(),
         })?;
 
-        let level = LogLevel::from_str(level_str).map_err(|e| ParseError {
+        // Accept formats like [INFO], [ERROR], etc.
+        let cleaned_level = level_str.trim_matches(&['[', ']'][..]);
+
+        let level = LogLevel::from_str(cleaned_level).map_err(|e| ParseError {
             file: source_file.to_path_buf(),
             line_number,
             content: line.to_string(),
             reason: e,
         })?;
+
 
         let after_level = rest_parts.next().ok_or_else(|| ParseError {
             file: source_file.to_path_buf(),

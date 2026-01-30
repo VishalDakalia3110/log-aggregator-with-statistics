@@ -1,49 +1,90 @@
 use std::env;
-use std::fs::File;
+use serde_json;
+use std::fs::{self, File};
 use std::io::{self, BufRead};
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 use log_aggregator::analyzer::Analyzer;
 use log_aggregator::log_entry::LogEntry;
 
-fn main() {
-    let args: Vec<String> = env::args().collect();
-
-    if args.len() != 2 {
-        eprintln!("Usage: cargo run <log_file>");
-        return;
-    }
-
-    let log_path = Path::new(&args[1]);
-    let file = match File::open(log_path) {
+fn parse_file(path: &Path, entries: &mut Vec<LogEntry>) {
+    let file = match File::open(path) {
         Ok(f) => f,
         Err(e) => {
-            eprintln!("Failed to open file: {}", e);
+            eprintln!("Failed to open file {:?}: {}", path, e);
             return;
         }
     };
 
     let reader = io::BufReader::new(file);
-    let mut entries = Vec::new();
 
     for (line_number, line) in reader.lines().enumerate() {
         let line = match line {
             Ok(l) => l,
             Err(e) => {
-                eprintln!("Error reading line {}: {}", line_number + 1, e);
+                eprintln!(
+                    "Error reading line {} in {:?}: {}",
+                    line_number + 1,
+                    path,
+                    e
+                );
                 continue;
             }
         };
 
-        match LogEntry::parse(&line, log_path, line_number + 1) {
+        match LogEntry::parse(&line, path, line_number + 1) {
             Ok(entry) => entries.push(entry),
             Err(err) => {
                 eprintln!(
-                    "Parse error at line {}: {}",
-                    err.line_number, err.reason
+                    "Parse error in {:?} at line {}: {}",
+                    err.file, err.line_number, err.reason
                 );
             }
         }
+    }
+}
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+
+    if args.len() != 2 {
+        eprintln!("Usage: cargo run <log_file | log_directory>");
+        return;
+    }
+
+    let input_path = PathBuf::from(&args[1]);
+    let mut entries = Vec::new();
+
+    if input_path.is_file() {
+        parse_file(&input_path, &mut entries);
+    } else if input_path.is_dir() {
+        let dir_entries = match fs::read_dir(&input_path) {
+            Ok(d) => d,
+            Err(e) => {
+                eprintln!("Failed to read directory {:?}: {}", input_path, e);
+                return;
+            }
+        };
+
+        for entry in dir_entries {
+            let entry = match entry {
+                Ok(e) => e,
+                Err(_) => continue,
+            };
+
+            let path = entry.path();
+            if path.is_file() {
+                parse_file(&path, &mut entries);
+            }
+        }
+    } else {
+        eprintln!("Provided path is neither a file nor a directory");
+        return;
+    }
+
+    if entries.is_empty() {
+        println!("No valid log entries found.");
+        return;
     }
 
     let analyzer = Analyzer::new(entries);
@@ -74,5 +115,11 @@ fn main() {
 
     if let Some(last) = stats.last_entry {
         println!("Last log entry: {}", last);
+    }
+    println!("\n===== JSON Output =====");
+
+    match serde_json::to_string_pretty(&stats) {
+        Ok(json) => println!("{}", json),
+        Err(e) => eprintln!("Failed to serialize statistics to JSON: {}", e),
     }
 }

@@ -1,0 +1,51 @@
+2024-01-15 09:00:01 [INFO] auth: User login started
+2024-01-15 09:00:02 [INFO] auth: User credentials validated
+2024-01-15 09:00:03 [INFO] auth: User login successful
+2024-01-15 09:05:10 [DEBUG] api: Incoming request /users
+2024-01-15 09:05:11 [INFO] api: Request parsed successfully
+2024-01-15 09:05:12 [WARN] api: Deprecated endpoint accessed
+2024-01-15 09:10:45 [INFO] db: Connection opened
+2024-01-15 09:10:46 [ERROR] db: Query timeout
+2024-01-15 09:10:47 [INFO] db: Connection closed
+2024-01-15 09:15:30 [INFO] scheduler: Job cleanup started
+2024-01-15 09:15:31 [INFO] scheduler: Job cleanup completed
+2024-01-15 09:20:00 [DEBUG] cache: Cache miss for key user_42
+2024-01-15 09:20:01 [INFO] cache: Cache updated for key user_42
+2024-01-15 09:25:10 [INFO] api: Incoming request /orders
+2024-01-15 09:25:11 [ERROR] api: Failed to deserialize request
+2024-01-15 09:25:12 [INFO] api: Returning error response
+2024-01-15 09:30:00 [INFO] auth: User logout started
+2024-01-15 09:30:01 [INFO] auth: User logout successful
+2024-01-15 10:00:00 [INFO] system: Hourly metrics collection started
+2024-01-15 10:00:01 [INFO] system: CPU usage recorded
+2024-01-15 10:00:02 [INFO] system: Memory usage recorded
+2024-01-15 10:05:15 [WARN] system: High memory usage detected
+2024-01-15 10:05:16 [INFO] system: Memory usage normalized
+2024-01-15 10:10:30 [DEBUG] api: Incoming request /health
+2024-01-15 10:10:31 [INFO] api: Health check passed
+2024-01-15 10:20:00 [INFO] db: Backup started
+2024-01-15 10:20:01 [INFO] db: Backup in progress
+2024-01-15 10:20:02 [INFO] db: Backup completed
+2024-01-15 10:30:45 [ERROR] scheduler: Failed to start job cleanup
+2024-01-15 10:30:46 [INFO] scheduler: Retrying job cleanup
+2024-01-15 10:30:47 [INFO] scheduler: Job cleanup completed
+2024-01-15 11:00:00 [INFO] system: Hourly metrics collection started
+2024-01-15 11:00:01 [INFO] system: CPU usage recorded
+2024-01-15 11:00:02 [INFO] system: Memory usage recorded
+2024-01-15 11:15:20 [WARN] auth: Multiple failed login attempts
+2024-01-15 11:15:21 [INFO] auth: Account temporarily locked
+2024-01-15 11:20:00 [DEBUG] cache: Cache eviction triggered
+2024-01-15 11:20:01 [INFO] cache: Cache eviction completed
+2024-01-15 11:30:30 [ERROR] db: Disk write failure
+2024-01-15 11:30:31 [FATAL] db: Database corruption detected
+2024-01-15 11:30:32 [INFO] system: Initiating emergency shutdown
+2024-01-15 12:00:00 [INFO] system: System restart initiated
+2024-01-15 12:00:01 [INFO] system: Services starting
+2024-01-15 12:00:02 [INFO] system: Services started successfully
+2024-01-15 12:10:10 [DEBUG] api: Incoming request /login
+2024-01-15 12:10:11 [INFO] api: Login request processed
+2024-01-15 12:20:00 [INFO] auth: User password changed
+2024-01-15 12:25:45 [WARN] api: Slow response detected
+2024-01-15 12:25:46 [INFO] api: Response sent successfully
+2024-01-15 12:30:00 [INFO] system: Daily summary generation started
+2024-01-15 12:30:01 [INFO] system: Daily summary generation completed

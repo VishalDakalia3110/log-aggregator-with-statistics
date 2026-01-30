@@ -1,8 +1,9 @@
 use std::fmt;
 use std::str::FromStr;
 use std::cmp::Ordering;
+use serde::Serialize;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
 pub struct DateTime {
     pub year: u16,
     pub month: u8,
